@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌀 DIGITALE FREIHEIT · USER · SEEÜ · BIOS · DOM · FLÄCHE 48</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a12;
+            color: #e6f6ff;
+            font-family: 'Consolas', monospace;
+            min-height: 100vh;
+            padding: 16px;
+            background-image: radial-gradient(ellipse at 30% 40%, #0a0a20 0%, #000 100%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+        .header h1 {
+            font-size: 28px;
+            color: #ffd700;
+            letter-spacing: 6px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+        .header .sub {
+            color: #445555;
+            font-size: 11px;
+            letter-spacing: 3px;
+        }
+        .header .sub span { color: #88ddbb; }
+        .header .sub .frei { color: #ffd700; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: rgba(10,10,20,0.4);
+            border: 1px solid rgba(255,255,255,0.02);
+            border-radius: 16px;
+            padding: 12px;
+            backdrop-filter: blur(10px);
+        }
+        .panel h2 {
+            color: #ffd700;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 6px;
+            margin: 6px 0;
+            flex-wrap: wrap;
+        }
+        .input-row input {
+            flex: 1;
+            background: #111;
+            color: #9cf;
+            border: 1px solid #333;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 11px;
+            min-width: 150px;
+        }
+        .input-row input:focus {
+            border-color: #ffd700;
+            outline: none;
+        }
+
+        button {
+            background: #111;
+            color: #9cf;
+            border: 1px solid #333;
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 10px;
+            transition: all 0.2s;
+        }
+        button:hover {
+            background: #1a1a2a;
+            border-color: #ffd700;
+        }
+        button.primary {
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+        button.primary:hover {
+            background: #ffd700;
+            color: #000;
+        }
+        button.frei {
+            border-color: #4fc3f7;
+            color: #4fc3f7;
+        }
+        button.frei:hover {
+            background: #4fc3f7;
+            color: #000;
+        }
+
+        .console {
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 10px;
+            color: #88ddbb;
+            font-family: monospace;
+            line-height: 1.5;
+            border: 1px solid rgba(255,255,255,0.02);
+            min-height: 40px;
+            white-space: pre-wrap;
+            margin-top: 4px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .console-small {
+            max-height: 80px;
+            font-size: 9px;
+        }
+
+        .log {
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            padding: 6px 8px;
+            font-size: 8px;
+            color: #88ddbb;
+            max-height: 80px;
+            overflow-y: auto;
+            font-family: monospace;
+            line-height: 1.4;
+            border: 1px solid rgba(255,255,255,0.02);
+            margin-top: 6px;
+        }
+        .log .entry { padding: 1px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .log .time { color: #445555; }
+        .log .ok { color: #4f4; }
+        .log .warn { color: #ffaa00; }
+        .log .frei { color: #ffd700; }
+        .log .user { color: #4fc3f7; }
+
+        .footer {
+            text-align: center;
+            margin-top: 16px;
+            padding: 8px;
+            color: #222;
+            font-size: 8px;
+            letter-spacing: 2px;
+            border-top: 1px solid rgba(255,255,255,0.01);
+        }
+        .footer span { color: #ffd700; }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 10px;
+            margin-top: 6px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 6px;
+            font-size: 9px;
+            color: #445555;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .status-bar span { color: #88ddbb; }
+        .status-bar .frei-status { color: #ffd700; }
+
+        .flaeche-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+        .flaeche-grid .console {
+            min-height: 60px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+   <!-- HEADER -->
+<div class="header">
+    <h1>🌀 DIGITALE FREIHEIT · USER · SEEÜ · BIOS · DOM</h1>
+    <div class="sub">
+        <span class="frei">FREI</span> ·
+        <span>USER</span> ·
+        <span>SEEÜ</span> ·
+        <span>BIOS</span> ·
+        <span>DOM</span> ·
+        <span>FLÄCHE 48</span> ·
+        <span>wieimmer4u</span>
+    </div>
+</div>
+
+
+    <!-- USER INPUT -->
+    <div class="panel">
+        <h2>👤 USER · NEU‑USER‑ENGINE</h2>
+        <div class="input-row">
+            <input id="userInput" type="text" placeholder="Φ + AX + P4 · z.B. Φ AX P4" value="Φ AX P4">
+            <button class="primary" id="btn-run">▶ START</button>
+            <button class="frei" id="btn-random">🎲 ZUFALL</button>
+            <button id="btn-reset">⟲ RESET</button>
+        </div>
+        <div class="status-bar">
+            <span class="frei-status">💡 FREIHEIT: <span id="frei-status">aktiv</span></span>
+            <span>👤 USER: <span id="user-status">bereit</span></span>
+            <span>🌀 ORBIT: <span id="orbit-status">—</span></span>
+        </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+
+        <!-- LINKER BEREICH: SEEÜ + BIOS -->
+        <div class="panel">
+            <h2>🌀 SEEÜ · STARTERPANEL</h2>
+            <div class="console" id="seeuOut">⏳ Warte auf Eingabe…</div>
+
+            <h2 style="margin-top:10px;">⚡ 698869 · BIOS‑MENÜ</h2>
+            <div class="console" id="biosOut">⏳ Warte auf Eingabe…</div>
+        </div>
+
+        <!-- RECHTER BEREICH: DOM + TOOLOMAT -->
+        <div class="panel">
+            <h2>📊 TOOLOMAT DOM · STRUKTUR/MASSE</h2>
+            <div class="console" id="domOut">⏳ Warte auf Eingabe…</div>
+
+            <h2 style="margin-top:10px;">🧩 USER · IDENTITÄT</h2>
+            <div class="console console-small" id="userOut">⏳ Lade USER…</div>
+        </div>
+    </div>
+
+    <!-- FLÄCHE 48 -->
+    <div class="panel">
+        <h2>📐 FLÄCHE 48 · ZWEI‑SEITEN‑ANALYSE</h2>
+        <div class="flaeche-grid">
+            <div>
+                <div style="color:#4fc3f7;font-size:9px;margin-bottom:2px;">🔷 SEITE A</div>
+                <div class="console" id="faOut">⏳ Warte…</div>
+            </div>
+            <div>
+                <div style="color:#ffd700;font-size:9px;margin-bottom:2px;">🔶 SEITE B</div>
+                <div class="console" id="fbOut">⏳ Warte…</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOG -->
+    <div class="panel">
+        <h2>📋 LOG · FREIHEIT</h2>
+        <div class="log" id="log">
+            <div class="entry"><span class="time">[INIT]</span> <span class="frei">🌀 DIGITALE FREIHEIT · USER · SEEÜ · BIOS · DOM</span></div>
+            <div class="entry"><span class="time">[INIT]</span> <span class="user">👤 USER‑Engine bereit · Alles ist frei</span></div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <span>🌀</span> DIGITALE FREIHEIT · USER · SEEÜ · BIOS · DOM · FLÄCHE 48 · <span>wieimmer4u</span>
+    </div>
+
+</div>
+
+<script>
+// ============================================================
+// DIGITALE FREIHEIT · USER · SEEÜ · BIOS · DOM · FLÄCHE 48
+// ============================================================
+
+// ─── STATE ──────────────────────────────────────────────────
+let currentInput = 'Φ AX P4';
+let userData = {
+    name: 'Freiheits-User',
+    level: 42,
+    status: 'frei'
+};
+
+// ─── DOM ────────────────────────────────────────────────────
+const logDiv = document.getElementById('log');
+
+function log(msg, type = 'ok') {
+    const entry = document.createElement('div');
+    entry.className = 'entry';
+    const time = new Date().toLocaleTimeString();
+    const cls = type === 'ok' ? 'ok' : type === 'warn' ? 'warn' : type === 'frei' ? 'frei' : type === 'user' ? 'user' : '';
+    entry.innerHTML = `<span class="time">[${time}]</span> <span class="${cls}">${msg}</span>`;
+    logDiv.appendChild(entry);
+    logDiv.scrollTop = logDiv.scrollHeight;
+    while (logDiv.children.length > 30) logDiv.removeChild(logDiv.firstChild);
+}
+
+// ─── HILFSFUNKTIONEN ────────────────────────────────────────
+function orbit(f) {
+    if (f.includes('Φ')) return 'IKI';
+    if (f.includes('φ∞')) return 'MA³';
+    if (f.includes('φ²')) return 'UC';
+    if (f.includes('φ')) return 'BIR';
+    return 'none';
+}
+
+function operator(f) {
+    if (f.includes('AX')) return 'AX';
+    if (f.includes('XA')) return 'XA';
+    return 'none';
+}
+
+function run(f) {
+    if (f.includes('P4')) return 'Start';
+    if (f.includes('P0')) return 'Wake';
+    if (f.includes('P1')) return 'Melt';
+    if (f.includes('P2')) return 'Merge';
+    if (f.includes('Pe')) return 'End';
+    return 'none';
+}
+
+// ─── SEEÜ ──────────────────────────────────────────────────
+function seeu(f) {
+    const len = f.length;
+    const orb = orbit(f);
+    const op = operator(f);
+    return `SEEÜ‑SCAN\nLänge: ${len}\nOrbit: ${orb}\nOperator: ${op}\nRUN: ${run(f)}`;
+}
+
+// ─── BIOS ──────────────────────────────────────────────────
+function bios(f) {
+    const orb = orbit(f);
+    const r = run(f);
+    return `BIOS‑Menü\nAchse: ${orb}\nRUN: ${r}\nStatus: ${r !== 'none' ? '✅ bereit' : '⏳ wartet'}`;
+}
+
+// ─── DOM ──────────────────────────────────────────────────
+function dom(f) {
+    const len = f.length;
+    const pos = len % 12;
+    const mass = len * 3;
+    return `DOM‑SCAN\nPOS = (${pos}, φ)\nMASS = ${mass}\nSCAN = ${len} Zeichen\nOrbit: ${orbit(f)}`;
+}
+
+// ─── FLÄCHE 48 ────────────────────────────────────────────
+function flaeche(f, side) {
+    const len = f.length;
+    const pos = (len + (side === 'A' ? 3 : 7)) % 16;
+    const mass = len * (side === 'A' ? 2 : 4);
+    const orb = orbit(f);
+    const op = operator(f);
+    const r = run(f);
+    return `Fläche ${side}\nPOS = (${pos}, φ)\nMASS = ${mass}\nOrbit: ${orb}\nOperator: ${op}\nRUN: ${r}`;
+}
+
+// ─── USER ──────────────────────────────────────────────────
+function userInfo(f) {
+    const len = f.length;
+    const orb = orbit(f);
+    const op = operator(f);
+    const r = run(f);
+    return `👤 USER-IDENTITÄT\nName: ${userData.name}\nLevel: ${userData.level}\nStatus: ${userData.status}\n\nEingabe: "${f}"\nLänge: ${len}\nOrbit: ${orb}\nOperator: ${op}\nRUN: ${r}`;
+}
+
+// ─── UPDATE UI ─────────────────────────────────────────────
+function updateAll() {
+    const f = document.getElementById('userInput').value;
+    currentInput = f;
+
+    document.getElementById('seeuOut').textContent = seeu(f);
+    document.getElementById('biosOut').textContent = bios(f);
+    document.getElementById('domOut').textContent = dom(f);
+    document.getElementById('faOut').textContent = flaeche(f, 'A');
+    document.getElementById('fbOut').textContent = flaeche(f, 'B');
+    document.getElementById('userOut').textContent = userInfo(f);
+
+    document.getElementById('orbit-status').textContent = orbit(f) || '—';
+    document.getElementById('user-status').textContent = run(f) !== 'none' ? 'aktiv' : 'bereit';
+    document.getElementById('frei-status').textContent = 'aktiv';
+
+    log(`🌀 UPDATE · "${f}" · Orbit: ${orbit(f)} · RUN: ${run(f)}`, 'frei');
+}
+
+// ─── RANDOM ────────────────────────────────────────────────
+function randomInput() {
+    const combos = [
+        'Φ AX P4',
+        'Φ AX P0',
+        'φ∞ XA P1',
+        'φ² AX P2',
+        'Φ XA Pe',
+        'φ AX P4',
+        'Φ φ∞ P4',
+        'AX P4 Φ'
+    ];
+    const random = combos[Math.floor(Math.random() * combos.length)];
+    document.getElementById('userInput').value = random;
+    updateAll();
+    log(`🎲 ZUFALL · "${random}"`, 'user');
+}
+
+// ─── RESET ──────────────────────────────────────────────────
+function resetAll() {
+    document.getElementById('userInput').value = 'Φ AX P4';
+    userData = { name: 'Freiheits-User', level: 42, status: 'frei' };
+    updateAll();
+    log('⟲ RESET · Alles zurückgesetzt', 'warn');
+}
+
+// ─── EVENTS ──────────────────────────────────────────────────
+document.getElementById('btn-run').addEventListener('click', updateAll);
+document.getElementById('btn-random').addEventListener('click', randomInput);
+document.getElementById('btn-reset').addEventListener('click', resetAll);
+
+document.getElementById('userInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') updateAll();
+});
+
+// ─── TASTATUR ────────────────────────────────────────────────
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'r' || e.key === 'R') randomInput();
+    if (e.key === 'x' || e.key === 'X') resetAll();
+    if (e.key === 'Enter' && document.activeElement === document.getElementById('userInput')) {
+        updateAll();
+    }
+});
+
+// ─── INIT ────────────────────────────────────────────────────
+updateAll();
+log('🌀 DIGITALE FREIHEIT · USER · SEEÜ · BIOS · DOM · FLÄCHE 48', 'frei');
+log('⌨️  r=Zufall  x=Reset  Enter=Update', 'user');
+
+console.log('🌀 DIGITALE FREIHEIT · USER · SEEÜ · BIOS · DOM · FLÄCHE 48');
+console.log('⌨️  r=Zufall  x=Reset  Enter=Update');
+console.log('📝 Alles ist frei · Alles ist editierbar · Alles ist möglich');
+</script>
+
+</body>
+</html>

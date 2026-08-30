@@ -1,0 +1,72 @@
+// suite.board — Zentrale Steuerung der SUITE
+// Rolle: MASTER-BOARD für CAUSE → WHIRL → ID → ROOM
+
+import { CAUSE } from "../build.suite/CAUSE.suite";
+import { WHIRL } from "../build.suite/WHIRL.suite";
+import { ID_UNIT } from "../ID_UNIT.js";
+import { OPEN_ROOM } from "../LIVE.room/OPEN.room";
+
+export const SUITE_BOARD = {
+
+    name: "SUITE.board",
+    active: true,
+
+    state: {
+        lastInput: null,
+        lastCycle: null,
+        agents: [],
+        actions: [],
+        stream: [],
+        timestamp: null
+    },
+
+    // Agent hinzufügen
+    addAgent(agent) {
+        this.state.agents.push(agent);
+        OPEN_ROOM.enter(agent);
+        return this.state;
+    },
+
+    // Aktion registrieren
+    addAction(action) {
+        this.state.actions.push({
+            action,
+            stamp: Date.now()
+        });
+        return this.state;
+    },
+
+    // Komplettzyklus: CAUSE → WHIRL → ID → ROOM
+    cycle(input) {
+        this.state.lastInput = input;
+
+        const cause = CAUSE.rotate(input);
+        const whirl = WHIRL(cause);
+        const id    = ID_UNIT(whirl);
+
+        const packet = { cause, whirl, id, stamp: Date.now() };
+
+        OPEN_ROOM.push(packet);
+        this.state.stream.push(packet);
+
+        this.state.lastCycle = packet;
+        this.state.timestamp = Date.now();
+
+        return packet;
+    },
+
+    // Board-Status
+    status() {
+        return {
+            name: this.name,
+            active: this.active,
+            agents: this.state.agents.length,
+            actions: this.state.actions.length,
+            stream: this.state.stream.length,
+            lastInput: this.state.lastInput,
+            lastCycle: this.state.lastCycle,
+            timestamp: this.state.timestamp
+        };
+    }
+};
+

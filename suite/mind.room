@@ -1,0 +1,39 @@
+// mind.room
+window.MIND_ROOM = {
+
+    active: false,
+    thought: "",
+    response: "ROOT",
+
+    layer7: ["OK","NOK","FLOW","BREAK","ECHO","VOID","ROOT"],
+
+    start() {
+        this.active = true;
+        this.thought = "mind.init";
+    },
+
+    stop() {
+        this.active = false;
+    },
+
+    think(input) {
+        if (!this.active) return;
+
+        // einfache Gedankenverarbeitung
+        this.thought = "mind:" + input;
+
+        // Response basierend auf Länge
+        const idx = input.length % 7;
+        this.response = this.layer7[idx];
+    },
+
+    render() {
+        return {
+            mode: "mind.room",
+            thought: this.thought,
+            response: this.response
+        };
+    }
+};
+
+SUITE_BOARD.register("mind.room", MIND_ROOM);

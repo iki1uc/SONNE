@@ -1,0 +1,37 @@
+// window.SUITE — globaler Container der gesamten SUITE
+
+import { CAUSE } from "./build.suite/CAUSE.suite";
+import { CAUSE_SUITE_EXTENDED } from "./build.suite/CAUSE_SUITE_EXTENDED.js";
+import { WHIRL } from "./build.suite/WHIRL.suite";
+import { ID_UNIT } from "./ID_UNIT.js";
+import { OPEN_ROOM } from "./LIVE.room/OPEN.room";
+
+window.SUITE = {
+
+    // Basis-Engine
+    CAUSE_BASE: CAUSE,
+
+    // Erweiterte Engine
+    CAUSE_EXT: CAUSE_SUITE_EXTENDED,
+
+    // Aktive Engine (du kannst wechseln)
+    CAUSE: CAUSE_SUITE_EXTENDED,
+
+    // WHIRL Rotation
+    WHIRL,
+
+    // Identitätskern
+    ID_UNIT,
+
+    // Live-Raum
+    ROOM: OPEN_ROOM,
+
+    // SUITE Status
+    status() {
+        return {
+            cause: this.CAUSE.state,
+            room: this.ROOM.state,
+            timestamp: Date.now()
+        };
+    }
+};

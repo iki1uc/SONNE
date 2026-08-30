@@ -1,0 +1,44 @@
+// brain.room
+window.BRAIN_ROOM = {
+
+    active: false,
+    input: "",
+    output: "",
+    response: "ROOT",
+
+    layer7: ["OK","NOK","FLOW","BREAK","ECHO","VOID","ROOT"],
+
+    start() {
+        this.active = true;
+        this.output = "brain.init";
+    },
+
+    stop() {
+        this.active = false;
+    },
+
+    process(input) {
+        if (!this.active) return;
+
+        this.input = input;
+
+        // Verarbeitung: invertieren, spiegeln, modifizieren
+        this.output = "brain:" + input.split("").reverse().join("");
+
+        // Response basierend auf ASCII‑Summe
+        const sum = [...input].reduce((a,c)=>a+c.charCodeAt(0),0);
+        this.response = this.layer7[sum % 7];
+    },
+
+    render() {
+        return {
+            mode: "brain.room",
+            input: this.input,
+            output: this.output,
+            response: this.response
+        };
+    }
+};
+
+SUITE_BOARD.register("brain.room", BRAIN_ROOM);
+

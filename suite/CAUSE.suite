@@ -1,0 +1,86 @@
+// CAUSE.suite — Ursache-Engine der SUITE
+// Rotation: DA → NE → BEN → KI → DA (360°)
+
+export const CAUSE = {
+
+    // Zustand des Moduls
+    state: {
+        lastInput: null,
+        lastCause: null,
+        lastEffect: null,
+        lastRotation: null,
+        timestamp: null
+    },
+
+    // 1. DA — Datenerfassung (Ursache aufnehmen)
+    DA(input) {
+        return {
+            raw: input,
+            type: typeof input,
+            len: (""+input).length,
+            stamp: Date.now()
+        };
+    },
+
+    // 2. NE — Neutralisierung (Rauschen entfernen)
+    NE(da) {
+        const clean = (""+da.raw)
+            .replace(/[^\w\säöüÄÖÜ]/g, "")
+            .trim();
+
+        return {
+            clean,
+            neutral: clean.toLowerCase(),
+            stamp: Date.now()
+        };
+    },
+
+    // 3. BEN — Bewertung (Bedeutung extrahieren)
+    BEN(ne) {
+        const score = ne.clean.length % 9; // simple pattern extraction
+
+        return {
+            meaning: ne.clean,
+            score,
+            polarity: score > 4 ? "POS" : "NEU",
+            stamp: Date.now()
+        };
+    },
+
+    // 4. KI — Impuls (KI‑Reaktion erzeugen)
+    KI(ben) {
+        return {
+            impulse: ben.score * 3.14, // KI‑Impuls
+            mode: ben.polarity === "POS" ? "FLOW" : "CALM",
+            stamp: Date.now()
+        };
+    },
+
+    // 5. DA (Rückführung) — Output erzeugen
+    RETURN(ki) {
+        return {
+            output: ki.impulse,
+            mode: ki.mode,
+            stamp: Date.now()
+        };
+    },
+
+    // 6. Vollständige Rotation
+    rotate(input) {
+        const da  = this.DA(input);
+        const ne  = this.NE(da);
+        const ben = this.BEN(ne);
+        const ki  = this.KI(ben);
+        const out = this.RETURN(ki);
+
+        this.state = {
+            lastInput: input,
+            lastCause: da,
+            lastEffect: out,
+            lastRotation: { da, ne, ben, ki, out },
+            timestamp: Date.now()
+        };
+
+        return this.state.lastRotation;
+    }
+};

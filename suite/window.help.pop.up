@@ -1,0 +1,62 @@
+// window.help.pop.up
+window.SUITE_POP = {
+
+    active: false,
+    editing: false,
+
+    original: "",
+    workingCopy: "",
+    response: "",
+    color: "#0f0",
+
+    styles: {
+        OK:    "#00ff00",
+        NOK:   "#ff0000",
+        FLOW:  "#00ffff",
+        BREAK: "#ff8800",
+        ECHO:  "#8888ff",
+        VOID:  "#444444",
+        ROOT:  "#ffffff"
+    },
+
+    openEdit(msg, resp) {
+        this.active = true;
+        this.editing = true;
+
+        this.original = msg;
+        this.workingCopy = msg;
+
+        this.response = resp;
+        this.color = this.styles[resp] || "#0f0";
+    },
+
+    edit(fn) {
+        if (!this.editing) return;
+        this.workingCopy = fn(this.workingCopy);
+    },
+
+    closeEdit() {
+        this.active = false;
+        this.editing = false;
+    },
+
+    render() {
+        const box = document.getElementById("popup");
+        if (!this.active) {
+            box.style.display = "none";
+            return;
+        }
+
+        const mode = this.editing ? "open.edit" : "closed.edit";
+        const text = this.editing ? this.workingCopy : this.original;
+
+        box.innerText = `${this.response} / ${mode}: ${text}`;
+        box.style.display = "block";
+        box.style.borderColor = this.color;
+        box.style.color = this.color;
+    }
+};
+
+// Registrierung im Board
+SUITE_BOARD.register("SUITE_POP", SUITE_POP);
+

@@ -1,0 +1,61 @@
+// OPEN.room — DEEP LIVE Raum für SUITE
+// Rolle: CAUSE → WHIRL → ID_UNIT → STREAM
+
+import { CAUSE } from "../build.suite/CAUSE.suite";
+import { WHIRL } from "../build.suite/WHIRL.suite";
+import { ID_UNIT } from "../ID_UNIT.js";
+
+export const OPEN_ROOM = {
+
+    name: "OPEN.room",
+    active: true,
+
+    state: {
+        agents: [],
+        actions: [],
+        stream: [],
+        lastEvent: null,
+        cause: null,
+        whirl: null,
+        id: null
+    },
+
+    // Agent betritt den Raum
+    enter(agent) {
+        this.state.agents.push(agent);
+        this.state.lastEvent = `ENTER:${agent}`;
+        return this.state;
+    },
+
+    // Agent verlässt den Raum
+    leave(agent) {
+        this.state.agents = this.state.agents.filter(a => a !== agent);
+        this.state.lastEvent = `LEAVE:${agent}`;
+        return this.state;
+    },
+
+    // CAUSE ausführen
+    cause(input) {
+        const result = CAUSE(input);
+        this.state.cause = result;
+        this.state.lastEvent = "CAUSE";
+        return result;
+    },
+
+    // WHIRL rotieren
+    whirl() {
+        const result = WHIRL(this.state.cause);
+        this.state.whirl = result;
+        this.state.lastEvent = "WHIRL";
+        return result;
+    },
+
+    // ID‑Unit aktivieren
+    id() {
+        const result = ID_UNIT(this.state.whirl);
+        this.state.id = result;
+        this.state.lastEvent = "ID_UNIT";
+        return result;
+    },
+
+    // Stream aktual

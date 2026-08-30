@@ -1,0 +1,32 @@
+// suite.gpu
+window.SUITE_GPU = {
+
+    device: null,
+    queue: null,
+
+    async init() {
+        if (!navigator.gpu) return false;
+
+        const adapter = await navigator.gpu.requestAdapter();
+        this.device = await adapter.requestDevice();
+        this.queue = this.device.queue;
+
+        return true;
+    },
+
+    // Beispiel: einfache GPU-Berechnung
+    async computeVectorAdd(a, b) {
+        // Beide Arrays müssen Float32Array sein
+        const result = new Float32Array(a.length);
+
+        for (let i = 0; i < a.length; i++) {
+            result[i] = a[i] + b[i]; // CPU-Fallback
+        }
+
+        return result;
+    }
+};
+
+// Registrierung im Board
+SUITE_BOARD.register("SUITE_GPU", SUITE_GPU);
+

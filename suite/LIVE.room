@@ -1,0 +1,37 @@
+// LIVE.room
+window.LIVE_ROOM = {
+
+    active: false,
+    tick: 0,
+    response: "ROOT",
+
+    start() {
+        this.active = true;
+        this.tick = 0;
+    },
+
+    stop() {
+        this.active = false;
+    },
+
+    update(dt) {
+        if (!this.active) return;
+
+        this.tick += dt;
+
+        // Response-Layer-7 Rotation
+        const layer = ["OK","NOK","FLOW","BREAK","ECHO","VOID","ROOT"];
+        this.response = layer[Math.floor(this.tick) % 7];
+    },
+
+    render() {
+        return {
+            mode: "LIVE.room",
+            tick: this.tick,
+            response: this.response
+        };
+    }
+};
+
+// Registrierung
+SUITE_BOARD.register("LIVE.room", LIVE_ROOM);
