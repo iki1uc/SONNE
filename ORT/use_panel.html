@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>USE – Interaktions‑Panel</title>
+<style>
+body { background:#000; color:#0f0; font-family:monospace; }
+h1 { color:#6cf; }
+pre { background:#000; padding:10px; border:1px solid #333; }
+input { width:80%; padding:6px; background:#111; color:#0f0; border:1px solid #333; }
+button { padding:8px 14px; background:#333; color:#eee; border:1px solid #666; cursor:pointer; }
+button:hover { background:#444; }
+</style>
+</head>
+
+<body>
+
+<h1>USE – Interaktions‑Panel</h1>
+<p>Mathematische Darstellung der Eingabe.</p>
+
+<input id="u" type="text" placeholder="Φ + AX + P4">
+<button onclick="go()">SCAN</button>
+
+<pre id="out">Noch keine Eingabe.</pre>
+
+<script>
+// ─── IMPORTIERTE LOGIK (wie move.js) ────────────────────────────────
+
+function orbit(f){
+    if (f.includes("Φ")) return "IKI";
+    if (f.includes("φ∞")) return "MA³";
+    if (f.includes("φ²")) return "UC";
+    if (f.includes("φ")) return "BIR";
+    return "none";
+}
+
+function operator(f){
+    if (f.includes("AX")) return "AX";
+    if (f.includes("XA")) return "XA";
+    return "none";
+}
+
+function run(f){
+    if (f.includes("P4")) return "Start";
+    if (f.includes("P0")) return "Wake";
+    if (f.includes("P1")) return "Melt";
+    if (f.includes("P2")) return "Merge";
+    if (f.includes("Pe")) return "End";
+    return "none";
+}
+
+function math(f){
+    return {
+        X: f.length % 7,
+        Y: f.length % 11,
+        Z: f.length % 13,
+        MASS: f.length * 3,
+        POS: f.length % 12
+    };
+}
+
+// ─── USE‑SCAN (wie move.js, aber kompakt) ────────────────────────────
+
+function go(){
+    const f = document.getElementById("u").value;
+
+    const m = math(f);
+
+    document.getElementById("out").innerText =
+        "USE – mathematisch\n\n" +
+        "X = " + m.X + "\n" +
+        "Y = " + m.Y + "\n" +
+        "Z = " + m.Z + "\n" +
+        "MASS = " + m.MASS + "\n" +
+        "POS = " + m.POS + "\n\n" +
+        "Orbit = " + orbit(f) + "\n" +
+        "Operator = " + operator(f) + "\n" +
+        "RUN = " + run(f) + "\n" +
+        "SCAN = " + f.length + " Zeichen\n";
+}
+</script>
+
+</body>
+</html>
