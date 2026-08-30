@@ -1,0 +1,21 @@
+<script type="module">
+  import { API_PIPE } from "./API-RESPO-PIPE.js";
+
+  window.API_UPDATE = function(data){
+    document.getElementById("api-id").innerText = data.id;
+    document.getElementById("api-axis").innerText = data.axis;
+    document.getElementById("api-orbit").innerText = data.orbit;
+    document.getElementById("api-pulse").innerText = data.pulse;
+    document.getElementById("api-sand").innerText = data.sand;
+    document.getElementById("api-stamp").innerText = data.stamp;
+  };
+</script>
+
+<div>
+  ID: <span id="api-id">–</span><br>
+  Axis: <span id="api-axis">–</span><br>
+  Orbit: <span id="api-orbit">–</span><br>
+  Pulse: <span id="api-pulse">–</span><br>
+  Zeit: <span id="api-stamp">–</span><br>
+  Gültigkeit: <span id="api-sand">⏳</span>
+</div>
